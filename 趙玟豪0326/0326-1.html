@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>趙玟豪</title>
+    <style>
+        /* 統一設定所有圖片為 block 元素，避免預設的 inline 間隙問題 */
+        img {
+            display: block;
+            margin-bottom: 25px; /* 預設間距 */
+        }
+        
+        /* 分別設定不同圖片的 margin-bottom */
+        img.dotted {
+            margin-bottom: 25px;
+        }
+        img.double {
+            margin-bottom: 50px;
+        }
+        img.medium {
+            margin-bottom: 75px;
+        }
+        img.thick {
+            margin-bottom: 25px; /* 最後一張不需要下方間距*/
+        }
+    </style>
+</head>
+<body>
+    <img src="下載.jfif" class="dotted" style="border: dotted;" width="200" height="150">
+    <img src="下載.jfif" class="double" style="border: double;" width="300" height="200">
+    <img src="下載.jfif" class="medium" style="border-style: solid;border-width: medium;" width="400" height="300">
+    <img src="下載.jfif" class="thick" style="border-style: solid;border-width: thick;" width="500" height="400">
+</body>
+</html>
