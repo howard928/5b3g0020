@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的練習</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+            font-family: Arial, sans-serif;
+        }
+        
+        .pie-chart {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background-image: conic-gradient(
+                red 0deg, 
+                red 90deg, 
+                yellow 90deg, 
+                yellow 180deg, 
+                green 180deg, 
+                green 270deg, 
+                blue 270deg
+            );
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .chart-container {
+            text-align: center;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+        
+        .legend {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 5px 15px;
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="chart-container">
+        <h1>趙玟豪</h1>
+        <div class="pie-chart"></div>
+        
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color" style="background: red;"></div>
+                <span>紅色 (0°-90°)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: yellow;"></div>
+                <span>黃色 (90°-180°)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: green;"></div>
+                <span>綠色 (180°-270°)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: blue;"></div>
+                <span>藍色 (270°-360°)</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+
+
+
+
+

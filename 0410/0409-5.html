@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高斯模糊與陰影效果組合</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            margin: 0;
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 40px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+            max-width: 1200px;
+        }
+        
+        .image-card {
+            width: 350px;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .image-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+        
+        .image-wrapper {
+            height: 250px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: filter 0.5s ease;
+        }
+        
+        /* 高斯模糊效果 */
+        .blur-effect img {
+            filter: blur(5px);
+        }
+        
+        .blur-effect:hover img {
+            filter: blur(0);
+        }
+        
+        /* 陰影模糊效果 */
+        .shadow-effect img {
+            filter: drop-shadow(10px 10px 15px rgba(0,0,0,0.5));
+        }
+        
+        .shadow-effect:hover img {
+            filter: drop-shadow(15px 15px 20px rgba(0,0,0,0.7));
+        }
+        
+        .description {
+            padding: 20px;
+            text-align: center;
+        }
+        
+        h2 {
+            color: #444;
+            margin-top: 0;
+        }
+        
+        p {
+            color: #666;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <h1>CSS 濾鏡效果組合展示</h1>
+    
+    <div class="container">
+        <!-- 高斯模糊效果 -->
+        <div class="image-card blur-effect">
+            <div class="image-wrapper">
+                <img src="C:\Users\STUST\Desktop\0410\下載.jfif" alt="美女">
+            </div>
+            <div class="description">
+                <h2>高斯模糊效果</h2>
+            
+            </div>
+        </div>
+        
+        <!-- 陰影效果 -->
+        <div class="image-card shadow-effect">
+            <div class="image-wrapper">
+                <img src="C:\Users\STUST\Desktop\0410\下載 (1).jfif" alt="帥哥">
+            </div>
+            <div class="description">
+                <h2>陰影模糊效果</h2>
+             
+            </div>
+        </div>
+    </div>
+</body>
+</html>
