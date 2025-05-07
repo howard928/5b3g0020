@@ -1,0 +1,29 @@
+.list {
+    display: flex;
+    /* 讓子元素水平排列 */
+    justify-content: center;
+  }
+  
+  .item {
+    background-color: pink;
+    flex: none;
+    width: 280px;
+    margin: 10px;
+  }
+  
+  @media only screen and (max-width: 1250px) {
+    /* 螢幕小於1250px，例如平板 */
+    .list {
+      flex-wrap: wrap;
+    }
+    .item {
+      width: 45%;
+    }
+  }
+  
+  @media only screen and (max-width: 500px) {
+    /* 螢幕小於500px，例如手機 */
+    .item {
+      width: 90%;
+    }
+  }

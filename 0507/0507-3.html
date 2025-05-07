@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>耶</title>
+  <style>
+    body {
+      background-color: white;
+      font-family: sans-serif;
+      margin: 0;
+      padding: 10px;
+    }
+    .container {
+      display: grid;
+      grid-template-columns: 1fr; /* 手機預設單欄 */
+      gap: 15px;
+      width: 100%;
+      max-width: 500px; /* 限制最大寬度 */
+      margin: 0 auto;
+    }
+    .title {
+      background-color: rgb(255, 14, 14);
+      color: black;
+      text-align: center;
+      font-size: 18px; /* 手機字體稍小 */
+      padding: 15px 0;
+      border-radius: 8px; /* 圓角設計 */
+    }
+    .image-container {
+      background-color: rgb(245, 90, 19);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+      border-radius: 8px; /* 圓角設計 */
+    }
+    .image-container img {
+      width: 100%;
+      max-width: 300px; /* 圖片最大寬度 */
+      height: auto; /* 高度自動調整 */
+      aspect-ratio: 1/1; /* 保持正方形 */
+      object-fit: cover;
+      border-radius: 5px; /* 圖片圓角 */
+    }
+
+    /* 平板電腦以上尺寸 (500px~) 時顯示2欄 */
+    @media (min-width: 500px) {
+      .container {
+        grid-template-columns: repeat(2, 1fr);
+        max-width: 800px;
+      }
+      .title {
+        font-size: 20px;
+        padding: 20px 0;
+      }
+    }
+
+    /* 桌面尺寸 (900px~) 時顯示4欄 */
+    @media (min-width: 900px) {
+      .container {
+        grid-template-columns: repeat(4, 1fr);
+        max-width: 1250px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="title">喬尼喬斯達</div>
+    <div class="image-container">
+      <img src="下載.jfif" alt="喬尼喬斯達">
+    </div>
+    
+    <div class="title">傑洛齊貝林</div>
+    <div class="image-container">
+      <img src="下載 (1).jfif" alt="傑洛齊貝林">
+    </div>
+    
+    <div class="title">迪亞哥布蘭度</div>
+    <div class="image-container">
+      <img src="下載 (2).jfif" alt="迪亞哥布蘭度">
+    </div>
+    
+    <div class="title">法尼瓦倫泰</div>
+    <div class="image-container">
+      <img src="images.jfif" alt="法尼瓦倫泰"> 
+    </div>
+  </div>
+</body>
+</html>
