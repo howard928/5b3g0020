@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>趙玟豪</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        pre {
+            background-color: #f8f8f8;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .output {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e8f4f8;
+            border-left: 4px solid #3498db;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>趙玟豪</h1>
+        
+        <h2>程式碼：</h2>
+        <pre>
+
+
+        </pre>
+        
+        <h2>執行結果：</h2>
+        <div class="output" id="output">
+           
+        </div>
+    </div>
+
+    <script>
+       
+        let man = new Object();
+        man.age = 18;
+        man.name = "小劉";
+        man.talk = function() {
+        
+            console.log("Hello 我是", this.name, "年齡", this.age);
+        };
+
+        document.getElementById("output").innerHTML = "Hello 我是 " + man.name;
+        
+
+        man.talk();
+    </script>
+</body>
+</html>

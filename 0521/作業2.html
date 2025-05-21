@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我喜歡的飲料</title>
+    <style>
+        body {
+            font-family: 'Microsoft JhengHei', Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f9f5f0;
+            color: #333;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #8b4513;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.2em;
+            border-bottom: 2px solid #d2b48c;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #a0522d;
+            margin: 30px 0 15px;
+            font-size: 1.5em;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        th, td {
+            padding: 15px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #f5deb3;
+            color: #8b4513;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        td {
+            background-color: #fffaf0;
+        }
+        .vertical-table {
+            width: 50%;
+            margin: 0 auto;
+        }
+        .horizontal-table {
+            width: 100%;
+        }
+        .drink-name {
+            font-weight: bold;
+            color: #a0522d;
+        }
+        .drink-type {
+            font-style: italic;
+            color: #666;
+            font-size: 0.9em;
+        }
+        @media (max-width: 768px) {
+            .vertical-table {
+                width: 100%;
+            }
+            .horizontal-table {
+                display: none;
+            }
+            .mobile-horizontal {
+                display: block;
+            }
+        }
+        @media (min-width: 769px) {
+            .mobile-horizontal {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>我喜歡的飲料</h1>
+        
+        <h2>直向排列</h2>
+        <table class="vertical-table">
+            <tr>
+                <th>飲料編號</th>
+                <th>飲料名稱</th>
+            </tr>
+            <tr>
+                <td>飲料1</td>
+                <td><span class="drink-name">原翠玉露</span><br><span class="drink-type">清新茶飲</span></td>
+            </tr>
+            <tr>
+                <td>飲料2</td>
+                <td><span class="drink-name">麥翠麥茶</span><br><span class="drink-type">麥香飲品</span></td>
+            </tr>
+            <tr>
+                <td>飲料3</td>
+                <td><span class="drink-name">珍珠奶茶</span><br><span class="drink-type">經典手搖</span></td>
+            </tr>
+            <tr>
+                <td>飲料4</td>
+                <td><span class="drink-name">古早味紅茶</span><br><span class="drink-type">傳統風味</span></td>
+            </tr>
+            <tr>
+                <td>飲料5</td>
+                <td><span class="drink-name">洛神花茶</span><br><span class="drink-type">健康養生</span></td>
+            </tr>
+            <tr>
+                <td>飲料6</td>
+                <td><span class="drink-name">全糖奶茶</span><br><span class="drink-type">甜蜜享受</span></td>
+            </tr>
+            <tr>
+                <td>飲料7</td>
+                <td><span class="drink-name">無糖茶</span><br><span class="drink-type">健康首選</span></td>
+            </tr>
+        </table>
+        
+        <h2>橫向排列</h2>
+        <table class="horizontal-table">
+            <tr>
+                <th>飲料1</th>
+                <th>飲料2</th>
+                <th>飲料3</th>
+                <th>飲料4</th>
+                <th>飲料5</th>
+                <th>飲料6</th>
+                <th>飲料7</th>
+            </tr>
+            <tr>
+                <td><span class="drink-name">原翠玉露</span><br><span class="drink-type">清新茶飲</span></td>
+                <td><span class="drink-name">麥翠麥茶</span><br><span class="drink-type">麥香飲品</span></td>
+                <td><span class="drink-name">珍珠奶茶</span><br><span class="drink-type">經典手搖</span></td>
+                <td><span class="drink-name">古早味紅茶</span><br><span class="drink-type">傳統風味</span></td>
+                <td><span class="drink-name">洛神花茶</span><br><span class="drink-type">健康養生</span></td>
+                <td><span class="drink-name">全糖奶茶</span><br><span class="drink-type">甜蜜享受</span></td>
+                <td><span class="drink-name">無糖茶</span><br><span class="drink-type">健康首選</span></td>
+            </tr>
+        </table>
+        
+        <!-- 手機版橫向表格 (小屏幕時顯示) -->
+        <div class="mobile-horizontal">
+            <h2>橫向排列 (手機版)</h2>
+            <div style="overflow-x: auto;">
+                <table style="width: auto; min-width: 100%;">
+                    <tr>
+                        <th>飲料1</th>
+                        <th>飲料2</th>
+                        <th>飲料3</th>
+                        <th>飲料4</th>
+                        <th>飲料5</th>
+                        <th>飲料6</th>
+                        <th>飲料7</th>
+                    </tr>
+                    <tr>
+                        <td><span class="drink-name">原翠玉露</span></td>
+                        <td><span class="drink-name">麥翠麥茶</span></td>
+                        <td><span class="drink-name">珍珠奶茶</span></td>
+                        <td><span class="drink-name">古早味紅茶</span></td>
+                        <td><span class="drink-name">洛神花茶</span></td>
+                        <td><span class="drink-name">全糖奶茶</span></td>
+                        <td><span class="drink-name">無糖茶</span></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

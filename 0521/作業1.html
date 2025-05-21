@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我喜歡的飲料統計系統</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .drink-item {
+            display: inline-block;
+            margin: 5px;
+            padding: 8px 15px;
+            background-color: #e3f2fd;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+        .result-box {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e8f5e9;
+            border-left: 4px solid #4CAF50;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>我喜歡的飲料統計系統</h1>
+        
+        <div class="section">
+        
+            <div id="drinksList"></div>
+            
+            <h2>飲料評分</h2>
+            <div class="input-group">
+                <label for="drinkSelect">選擇飲料：</label>
+                <select id="drinkSelect" class="input-field">
+                    <option value="">-- 請選擇 --</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="drinkScore">評分 (1-10分)：</label>
+                <input type="number" id="drinkScore" min="1" max="10" placeholder="輸入1-10的分數">
+            </div>
+            <button onclick="addRating()">新增評分</button>
+            <button onclick="calculateStats()">計算統計資料</button>
+            
+            <div id="statsResult" class="result-box" style="display:none;">
+                <h3>統計結果：</h3>
+                <table id="statsTable">
+                    <tr>
+                        <th>項目</th>
+                        <th>數值</th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 飲料資料
+        const drinks = [
+            { id: 1, name: "卡布奇諾咖啡", ratings: [] },
+            { id: 2, name: "拿鐵咖啡", ratings: [] },
+            { id: 3, name: "珍珠奶茶", ratings: [] },
+            { id: 4, name: "長島冰茶", ratings: [] },
+            { id: 5, name: "愛爾蘭咖啡", ratings: [] },
+            { id: 6, name: "藍色夏威夷", ratings: [] },
+            { id: 7, name: "英式水果冰茶", ratings: [] }
+        ];
+
+        // 初始化頁面
+        function initPage() {
+            // 顯示飲料清單
+            const drinksList = document.getElementById('drinksList');
+            drinksList.innerHTML = drinks.map(drink => 
+                `<span class="drink-item">${drink.name}</span>`
+            ).join(' ');
+            
+            // 填充下拉選單
+            const drinkSelect = document.getElementById('drinkSelect');
+            drinks.forEach(drink => {
+                const option = document.createElement('option');
+                option.value = drink.id;
+                option.textContent = drink.name;
+                drinkSelect.appendChild(option);
+            });
+        }
+
+        // 新增評分
+        function addRating() {
+            const drinkSelect = document.getElementById('drinkSelect');
+            const drinkScore = document.getElementById('drinkScore');
+            
+            const drinkId = parseInt(drinkSelect.value);
+            const score = parseInt(drinkScore.value);
+            
+            if (isNaN(drinkId) || isNaN(score) || score < 1 || score > 10) {
+                alert('請選擇有效的飲料和評分 (1-10)！');
+                return;
+            }
+            
+            const drink = drinks.find(d => d.id === drinkId);
+            drink.ratings.push(score);
+            
+            drinkScore.value = '';
+            alert(`已為 ${drink.name} 新增評分: ${score} 分`);
+            console.log(`${drink.name} 新增評分:`, score, '當前評分:', drink.ratings);
+        }
+
+        // 計算統計資料
+        function calculateStats() {
+            const statsTable = document.getElementById('statsTable');
+            // 清除舊的統計資料 (保留表頭)
+            while (statsTable.rows.length > 1) {
+                statsTable.deleteRow(1);
+            }
+            
+            // 計算每種飲料的統計資料
+            drinks.forEach(drink => {
+                if (drink.ratings.length === 0) return;
+                
+                const sum = drink.ratings.reduce((total, rating) => total + rating, 0);
+                const average = sum / drink.ratings.length;
+                const max = Math.max(...drink.ratings);
+                const min = Math.min(...drink.ratings);
+                
+                const row = statsTable.insertRow();
+                row.insertCell().textContent = drink.name;
+                row.insertCell().textContent = `
+                    評分次數: ${drink.ratings.length}
+                    總分: ${sum}
+                    平均: ${average.toFixed(2)}
+                    最高分: ${max}
+                    最低分: ${min}
+                `;
+            });
+            
+            // 顯示結果
+            document.getElementById('statsResult').style.display = 'block';
+            
+            // 在控制台輸出完整資料
+            console.log('飲料評分統計:', drinks);
+        }
+
+        // 初始化頁面
+        initPage();
+    </script>
+</body>
+</html>
