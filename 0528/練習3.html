@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>花卉介紹</title>
+</head>
+<body>
+  <h1>花卉介紹</h1>
+  
+  <div> 
+    <span onclick="changeToHydrangea();">1. 繡球花</span> 
+    <span onclick="changeToOncidium();">2. 文心蘭</span> 
+  </div> 
+  
+  <br/> 
+  
+  <div id="hydrangea">
+    <h2>繡球花</h2>
+    <p>2024繡球花季到啦！每年5月至6月初夏季節，粉藍、粉紫、粉紅等各色繡球花盛開。全台超過10處觀賞繡球花的推薦景點，包括陽明山、明池森林遊樂區等。</p>
+    <img src="下載 (1).jfif">
+  </div> 
+  
+  <div id="oncidium" style="display:none">
+    <h2>文心蘭</h2>
+    <p>文心蘭又名跳舞蘭，因其花朵形似跳舞的女孩而得名。花色多樣，包括黃色、紅色、粉色等，花期長且容易栽培，是受歡迎的觀賞花卉。</p>
+    <img src="下載.jfif">
+  </div> 
+  
+  <script> 
+    function changeToOncidium(){  
+      let hydrangeaDiv = document.querySelector("#hydrangea"); 
+      let oncidiumDiv = document.querySelector("#oncidium");  
+      hydrangeaDiv.style.display = "none"; 
+      oncidiumDiv.style.display = "block"; 
+    }
+    
+    function changeToHydrangea(){  
+      let oncidiumDiv = document.querySelector("#oncidium"); 
+      let hydrangeaDiv = document.querySelector("#hydrangea");
+      hydrangeaDiv.style.display = "block"; 
+      oncidiumDiv.style.display = "none"; 
+    }
+  </script>
+</body>
+</html>

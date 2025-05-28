@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>耶</title>
+  <style>
+    
+    
+    .radio-group {
+      margin-bottom: 25px;
+    }
+    .radio-option {
+      margin: 10px 0;
+    }
+    .buttons {
+      display: flex;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    button {
+      padding: 8px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1em;
+    }
+    .submit-btn {
+      background-color: #4CAF50;
+      color: white;
+    }
+    .reset-btn {
+      background-color: #f44336;
+      color: white;
+  
+    }
+  </style>
+</head>
+<body>
+  <h1>耶</h1>
+  
+  <div class="form-container">
+    <div class="file-path"></div>
+    
+    <form id="dessertForm">
+      <div class="form-title">喜歡的甜點</div>
+      
+      <div class="radio-group">
+        <div class="radio-option">
+          <input type="radio" id="macaron" name="fruit" value="馬卡龍">
+          <label for="macaron">馬卡龍</label>
+        </div>
+        <div class="radio-option">
+          <input type="radio" id="souffle" name="fruit" value="舒芙蕾" checked>
+          <label for="souffle">舒芙蕾</label>
+        </div>
+        <div class="radio-option">
+          <input type="radio" id="pie" name="fruit" value="蘋果派">
+          <label for="pie">蘋果派</label>
+        </div>
+        <div class="radio-option">
+          <input type="radio" id="tart" name="fruit" value="水果塔">
+          <label for="tart">水果塔</label>
+        </div>
+      </div>
+      
+      <div class="buttons">
+        <button type="button" class="submit-btn" onclick="submitSelection()">提交</button>
+        <button type="reset" class="reset-btn">重設</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    function submitSelection() {
+      const selectedFruit = document.querySelector('input[name="fruit"]:checked');
+      
+      if(selectedFruit) {
+        window.alert("您選擇了: " + selectedFruit.value);
+      } else {
+        window.alert("請選擇一個選項");
+      }
+    }
+
+    // 確保重設按鈕能清除所有選擇
+    document.getElementById('dessertForm').addEventListener('reset', function() {
+      // 取消所有單選按鈕的選中狀態
+      document.querySelectorAll('input[name="fruit"]').forEach(radio => {
+        radio.checked = false;
+      });
+    });
+  </script>
+</body>
+</html>

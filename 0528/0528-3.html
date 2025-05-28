@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div> 
+    <span onclick="changetabout();">這是</span> 
+    <span onclick="changetoexps();">我的經歷</span> 
+    </div> 
+    <br/> 
+    <div id="about">大家好,我是喬魯諾喬巴拿</div> 
+    <div id="exps" style="display:none">我是一名替身使者</div> 
+    <script> 
+    function changetoexps(){  
+    let aboutDiv=document.querySelector("#about"); 
+    let expsDiv=document.querySelector("#exps")  
+    aboutDiv.style.display="none"; 
+    expsDiv.style.display="block"; 
+    }
+    function changetabout(){  
+    let expsDiv=document.querySelector("#exps"); 
+    let aboutDiv=document.querySelector( "#about");
+    aboutDiv.style.display="block"; 
+    expsDiv.style.display="none"; 
+    }
+    </script>
+</body>
+</html>
