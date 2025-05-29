@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>趙政豪的成果報告</title>
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+QingKe+HuangYou&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #ff9eb5;
+            --secondary-color: #ffb6c1;
+            --accent-color: #ffd1dc;
+            --light-color: #fff5f7;
+            --text-color: #5a3a4a;
+            --dark-color: #3a2a35;
+        }
+        
+        body {
+            font-family: 'Ma Shan Zheng', cursive, 'ZCOOL QingKe HuangYou', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-image: url("JOJOASBR_launchTrailer_thumbnail.webp");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: var(--text-color);
+        }
+        
+        .container {
+            width: 80%; /* 縮小容器寬度 */
+            max-width: 800px; /* 縮小最大寬度 */
+            background: rgba(255, 255, 255, 0.85);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 25px; /* 減少內邊距 */
+            margin: 20px 0;
+            border-radius: 0;
+        }
+        
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px; /* 減少間距 */
+            gap: 10px; /* 減少間距 */
+        }
+        
+        .tab {
+            padding: 10px 20px; /* 縮小按鈕 */
+            background: white;
+            border: 2px solid var(--primary-color);
+            border-radius: 0;
+            color: var(--primary-color);
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px; /* 調整字體大小 */
+        }
+        
+        .tab:hover {
+            background: var(--primary-color);
+            color: rgb(236, 208, 48);
+        }
+        
+        .tab.active {
+            background: var(--primary-color);
+            color: rgb(15, 0, 0);
+        }
+        
+        .content-section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .content-section.active {
+            display: block;
+        }
+        
+        h1 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 20px; /* 減少間距 */
+            font-size: 28px; /* 調整字體大小 */
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        h2 {
+            color: var(--secondary-color);
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 8px; /* 減少間距 */
+            margin-top: 0;
+            font-size: 22px; /* 調整字體大小 */
+        }
+        
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 20px; /* 減少間距 */
+            margin-bottom: 20px; /* 減少間距 */
+        }
+        
+        .profile-img {
+            width: 150px; /* 縮小圖片 */
+            height: 150px; /* 縮小圖片 */
+            object-fit: cover;
+            border: 2px solid var(--accent-color);
+            border-radius: 0;
+        }
+        
+        .profile-info {
+            flex: 1;
+            font-size: 16px; /* 調整字體大小 */
+            line-height: 1.6; /* 增加行高 */
+        }
+        
+        .project-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* 縮小卡片 */
+            gap: 15px; /* 減少間距 */
+            margin-top: 15px; /* 減少間距 */
+        }
+        
+        .project-card {
+            background: rgb(243, 189, 227);
+            padding: 15px; /* 減少內邊距 */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            border: 1px solid #000000;
+            border-radius: 0;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+        }
+        
+        .project-card h3 {
+            font-size: 18px; /* 調整字體大小 */
+            color: var(--primary-color);
+            margin-top: 0;
+        }
+        
+        .project-card p {
+            font-size: 14px; /* 調整字體大小 */
+        }
+        
+        .project-card a {
+            display: inline-block;
+            padding: 8px 16px; /* 縮小按鈕 */
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 0;
+            margin-top: 10px; /* 減少間距 */
+            transition: background 0.3s ease;
+            font-size: 14px; /* 調整字體大小 */
+        }
+        
+        .project-card a:hover {
+            background: var(--secondary-color);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                width: 90%;
+                padding: 20px;
+            }
+            
+            .profile {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .project-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>趙政豪的成果報告</h1>
+        
+        <div class="tabs">
+            <div class="tab active" onclick="changeToHydrangea()">自我介紹</div>
+            <div class="tab" onclick="changeToOncidium()">成果報告</div>
+        </div>
+        
+        <div id="hydrangea" class="content-section active">
+            <h2>關於我</h2>
+            <div class="profile">
+                <img src="600x600.jpg" alt="趙政豪的照片" class="profile-img">
+                <div class="profile-info">
+                    <p>大家好，老師好，我是趙政豪，</p>
+                    <p>我對前端開發充滿熱情，喜歡創造美觀且實用的網頁界面。在課餘時間，我也會研究新的網頁技術，不斷提升自己的技能。</p>
+                    <p>這份成果報告展示了我這學期所學的內容，包括各種表單元素的使用和網頁互動效果的實現。</p>
+                </div>
+            </div>
+        </div>
+        
+        <div id="oncidium" class="content-section">
+            <h2>學習成果展示</h2>
+            <p>這是我這學期從老師學到的東西，點擊下方按鈕可以查看各個專案：</p>
+            
+            <div class="project-list">
+                <div class="project-card">
+                    <h3>輸入類型</h3>
+                    <p>展示各種HTML輸入類型的使用方法</p>
+                    <a href="inputtype.html" target="_blank">查看專案</a>
+                </div>
+                
+                <div class="project-card">
+                    <h3>手機版頁面</h3>
+                    <p>響應式設計的手機版頁面</p>
+                    <a href="phone.html" target="_blank">查看專案</a>
+                </div>
+                
+                <div class="project-card">
+                    <h3>選擇元素</h3>
+                    <p>下拉選單和選擇框的應用</p>
+                    <a href="select.html" target="_blank">查看專案</a>
+                </div>
+                
+                <div class="project-card">
+                    <h3>表單設計</h3>
+                    <p>完整的網頁表單實現</p>
+                    <a href="form.html" target="_blank">查看專案</a>
+                </div>
+                
+                <div class="project-card">
+                    <h3>標籤元素</h3>
+                    <p>標籤(label)的使用範例</p>
+                    <a href="label.html" target="_blank">查看專案</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function changeToOncidium() {  
+            document.querySelector("#hydrangea").classList.remove("active");
+            document.querySelector("#oncidium").classList.add("active");
+            
+            document.querySelectorAll(".tab").forEach(tab => {
+                tab.classList.remove("active");
+            });
+            document.querySelectorAll(".tab")[1].classList.add("active");
+        }
+        
+        function changeToHydrangea() {  
+            document.querySelector("#oncidium").classList.remove("active");
+            document.querySelector("#hydrangea").classList.add("active");
+            
+            document.querySelectorAll(".tab").forEach(tab => {
+                tab.classList.remove("active");
+            });
+            document.querySelectorAll(".tab")[0].classList.add("active");
+        }
+    </script>
+</body>
+</html>
