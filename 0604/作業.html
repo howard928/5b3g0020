@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .product img {
+            width: 200px;  
+            height: auto;  
+            display: block; 
+            margin-bottom: 10px; 
+        }
+        .product {
+            margin-bottom: 20px; 
+            border: 1px solid #ddd; 
+            padding: 10px; 
+            max-width: 220px; 
+        }
+        button {
+            margin: 5px;
+            padding: 8px 15px;
+            cursor: pointer;
+        }
+        #totalDisplay {
+            margin: 15px 0;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <button id="calculateTotal">購物車總額</button>
+    <button id="clearCart">清空購物車</button>
+    <div id="totalDisplay"></div>
+
+    <div class="product">
+        <img src="170790988969_1200.jpg" alt="空條承太郎">
+        <p>空條承太郎 $2000</p>
+        <button class="addToCart" data-price="2000">加入購物車</button>
+    </div>
+
+    <div class="product">
+        <img src="22426897250388_859.jpg" alt="吉良吉影">
+        <p>吉良吉影 $2500</p>
+        <button class="addToCart" data-price="2500">加入購物車</button>
+    </div>
+
+    <script>
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const addToCartButtons = document.querySelectorAll('.addToCart');
+        const calculateTotalButton = document.getElementById('calculateTotal');
+        const clearCartButton = document.getElementById('clearCart');
+        const totalDisplay = document.getElementById('totalDisplay');
+        
+        addToCartButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const price = parseInt(button.getAttribute('data-price'));
+                cart.push(price);
+                localStorage.setItem('cart', JSON.stringify(cart));
+                alert(`已添加商品 ($${price}) 到購物車`);
+            });
+        });
+        
+        calculateTotalButton.addEventListener('click', () => {
+            const total = cart.reduce((sum, price) => sum + price, 0);
+            console.log(`購物車總額: $${total}`);
+            totalDisplay.innerHTML = `<h3>購物車總額: $${total}</h3>`;
+            localStorage.setItem('cartTotal', total.toString());
+        });
+        
+        clearCartButton.addEventListener('click', () => {
+            cart = [];
+            localStorage.removeItem('cart');
+            localStorage.removeItem('cartTotal');
+            totalDisplay.innerHTML = '<h3>購物車已清空</h3>';
+            console.log('購物車已清空');
+        });
+    </script>
+</body>
+    
+</html>
+
+
+   

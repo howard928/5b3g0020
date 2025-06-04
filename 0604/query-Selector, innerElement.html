@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+        <p>蘋果</p> 
+        <p class="js-p">鳳梨</p> 
+        <p id="js-id">香蕉</p> 
+        <script> 
+        const pElement=document.querySelector("p"); 
+        console.log(pElement.innerHTML); 
+        //pElement.innerHTML="蘋果好吃"; 
+        const classElement=document.querySelector(".js-p"); 
+        console.log(classElement.innerHTML); 
+        const idElement=document.querySelector("id"); 
+        console.log(idElement.innerHTML); 
+        </script> 
+        
+            <button>你好</button> 
+            <script> 
+            const buttonElement=document.querySelector("button"); 
+            console.log(buttonElement.innerHTML); 
+            buttonElement.innerHTML="我很好"; 
+            </script> 
+            
+
+    
+</body>
+</html>
