@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>購物車作業</h1>
+    <div id="products">
+        <div>
+            <img src="170790988969_1200.jpg" alt="泡麵" width="100">
+            <p>公仔  - $5000</p>
+            <button onclick="addToCart(50)">加入購物車</button>
+        </div>
+        <div>
+            <img src="22332444806064_633.jpg" alt="泡麵2" width="100">
+            <p>公仔  - $6000</p>
+            <button onclick="addToCart(60)">加入購物車</button>
+        </div>
+        <div>
+            <img src="22426897250388_859.jpg" alt="泡麵3" width="100">
+            <p>公仔 - $7000</p>
+            <button onclick="addToCart(70)">加入購物車</button>
+        </div>
+    </div>
+    <button onclick="showTotal()">購物車總額</button>
+    <button onclick="clearCart()">清空購物車</button>
+    <h2 id="total"></h2>
+    <script>
+        let cartTotal = Number(localStorage.getItem('cartTotal')) || 0;
+        function addToCart(price) {
+            cartTotal += price;
+            localStorage.setItem('cartTotal', cartTotal);
+        }
+        function showTotal() {
+            console.log('購物車總額:', cartTotal);
+            document.getElementById('total').innerText = '購物車總額：$' + cartTotal;
+        }
+        function clearCart() {
+            cartTotal = 0;
+            localStorage.setItem('cartTotal', cartTotal);
+            document.getElementById('total').innerText = '';
+        }
+        if(cartTotal > 0) {
+            document.getElementById('total').innerText = '購物車總額：$' + cartTotal;
+        }
+    </script>
+</body>
+</html>
