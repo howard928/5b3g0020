@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>動態愛心特效 - 飄浮愛心</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(145deg, #2b1b2e 0%, #1a1a2e 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', 'Poppins', system-ui, -apple-system, sans-serif;
+            overflow-x: hidden;
+            cursor: pointer;
+        }
+
+        /* 主卡片容器 */
+        .container {
+            text-align: center;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            border-radius: 3rem;
+            padding: 2rem 2.5rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            transition: transform 0.2s ease;
+        }
+
+        .container:hover {
+            transform: scale(1.01);
+        }
+
+        h1 {
+            font-size: 3rem;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fad0c4);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            letter-spacing: 2px;
+        }
+
+        .heart-icon {
+            font-size: 5rem;
+            filter: drop-shadow(0 8px 16px rgba(255, 80, 120, 0.5));
+            animation: pulse 1.2s infinite ease;
+            display: inline-block;
+            margin: 20px 0;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.9; }
+            50% { transform: scale(1.2); text-shadow: 0 0 15px #ff3366; }
+            100% { transform: scale(1); opacity: 0.9; }
+        }
+
+        .info {
+            color: #f8e3f0;
+            font-weight: 500;
+            margin-top: 20px;
+            background: rgba(0,0,0,0.3);
+            padding: 8px 18px;
+            border-radius: 40px;
+            display: inline-block;
+            font-size: 1rem;
+        }
+
+        /* 愛心粒子區 (漂浮的愛心) */
+        .heart-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+            overflow: hidden;
+        }
+
+        /* 每個動態愛心的樣式 */
+        .floating-heart {
+            position: absolute;
+            bottom: -50px;
+            font-size: 1.5rem;
+            pointer-events: none;
+            opacity: 0.8;
+            animation: floatUp 4s linear forwards;
+            filter: drop-shadow(0 0 6px #ff4d6d);
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.9;
+            }
+            80% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-120vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* 點擊特效提示 */
+        .click-effect {
+            position: fixed;
+            font-size: 2rem;
+            pointer-events: none;
+            animation: popUp 0.6s ease-out forwards;
+            z-index: 1000;
+            filter: drop-shadow(0 0 8px #ff99aa);
+        }
+
+        @keyframes popUp {
+            0% {
+                transform: scale(0.2);
+                opacity: 1;
+            }
+            70% {
+                transform: scale(1.4);
+            }
+            100% {
+                transform: scale(1) translateY(-40px);
+                opacity: 0;
+            }
+        }
+
+        footer {
+            position: fixed;
+            bottom: 12px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: rgba(255,220,240,0.7);
+            font-size: 0.8rem;
+            z-index: 10;
+            font-weight: 400;
+        }
+
+        button {
+            background: #ff477e;
+            border: none;
+            color: white;
+            padding: 10px 26px;
+            font-size: 1.2rem;
+            border-radius: 60px;
+            margin-top: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 5px 0 #a0224a;
+            font-family: inherit;
+        }
+
+        button:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #a0224a;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="heart-icon">❤️</div>
+    <h1>楊樂樂我愛你</h1>
+    <div class="info">💗 點擊畫面任何地方 &nbsp;|&nbsp;  💗</div>
+    <button id="burstBtn"> 咻~碰好多愛心 </button>
+</div>
+
+<div class="heart-particles" id="heartParticles"></div>
+
+<script>
+    (function() {
+        // 取得放置愛心的容器
+        const container = document.getElementById('heartParticles');
+        
+        // 愛心符號列表 (各種愛心樣式)
+        const heartSymbols = ['❤️', '💖', '💗', '💓', '💕', '💞', '♥️', '❤️‍🔥', '🧡', '💝', '❣️'];
+        
+        // 隨機範圍函數
+        function randomRange(min, max) {
+            return min + Math.random() * (max - min);
+        }
+        
+        // 產生一個漂浮愛心
+        function createFloatingHeart(x = null, y = null, customSize = null) {
+            const heart = document.createElement('div');
+            heart.classList.add('floating-heart');
+            
+            // 隨機選擇愛心符號
+            const symbol = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+            heart.innerText = symbol;
+            
+            // 大小: 預設隨機 1rem ~ 3.5rem
+            let size;
+            if (customSize) {
+                size = customSize;
+            } else {
+                size = randomRange(1.2, 3.2);
+            }
+            heart.style.fontSize = size + 'rem';
+            
+            // 水平位置：如果在點擊時有傳入 X 座標，就用點擊位置；否則隨機寬度
+            let leftPos;
+            if (x !== null) {
+                // 確保愛心不會超出畫面邊界 (保留緩衝)
+                leftPos = Math.min(window.innerWidth - 40, Math.max(10, x));
+            } else {
+                leftPos = randomRange(20, window.innerWidth - 50);
+            }
+            heart.style.left = leftPos + 'px';
+            
+            // 起始 Y 位置: 如果有指定 y (例如點擊處)，可以從接近點擊處飄，但預設畫面底部
+            if (y !== null) {
+                // 讓愛心從點擊高度附近往上飄，感覺更有互動
+                heart.style.bottom = 'auto';
+                heart.style.top = y + 'px';
+                // 增加一點隨機偏移，讓特效更自然
+                heart.style.transform = `translateX(${randomRange(-15, 15)}px)`;
+            } else {
+                heart.style.bottom = `-${randomRange(10, 50)}px`;
+            }
+            
+            // 動畫持續時間 2.5 ~ 6 秒
+            const duration = randomRange(2.8, 6.5);
+            heart.style.animation = `floatUp ${duration}s linear forwards`;
+            
+            // 旋轉起始隨機角度
+            heart.style.transform = `rotate(${randomRange(-20, 20)}deg)`;
+            
+            // 透明度微變
+            heart.style.opacity = randomRange(0.6, 0.95);
+            
+            container.appendChild(heart);
+            
+            // 動畫結束後移除 DOM 元素，避免記憶體累積
+            heart.addEventListener('animationend', () => {
+                if (heart.parentNode) heart.remove();
+            });
+        }
+        
+        // 大量產生愛心 (愛心雨)
+        function createHeartRain(count = 28) {
+            for (let i = 0; i < count; i++) {
+                // 加上一點點延遲分批產生，更有層次感
+                setTimeout(() => {
+                    createFloatingHeart(null, null, randomRange(1, 3));
+                }, i * 50);
+            }
+        }
+        
+        // 點擊爆炸效果：以點擊位置為中心產生較多愛心 + 小型點擊愛心特效
+        function burstHeartsAtClick(event) {
+            const x = event.clientX;
+            const y = event.clientY;
+            
+            // 1. 中心爆裂產生 10~18 個愛心
+            const burstCount = Math.floor(randomRange(12, 22));
+            for (let i = 0; i < burstCount; i++) {
+                // 模擬放射狀偏移
+                const offsetX = (Math.random() - 0.5) * 130;
+                const offsetY = (Math.random() - 0.5) * 100 - 30;
+                const heartX = Math.min(window.innerWidth - 30, Math.max(10, x + offsetX));
+                const heartY = Math.min(window.innerHeight - 30, Math.max(10, y + offsetY));
+                
+                setTimeout(() => {
+                    createFloatingHeart(heartX, heartY, randomRange(1.1, 2.5));
+                }, i * 18);
+            }
+            
+            // 2. 加一個「點擊瞬間跳出的愛心特效」在滑鼠位置
+            const clickEffect = document.createElement('div');
+            clickEffect.className = 'click-effect';
+            const loveList = ['❤️', '💖', '💗'];
+            clickEffect.innerText = loveList[Math.floor(Math.random() * loveList.length)];
+            clickEffect.style.left = (x - 20) + 'px';
+            clickEffect.style.top = (y - 30) + 'px';
+            clickEffect.style.fontSize = '2.8rem';
+            document.body.appendChild(clickEffect);
+            
+            setTimeout(() => {
+                if (clickEffect.parentNode) clickEffect.remove();
+            }, 700);
+        }
+        
+        // 自動背景飄浮愛心 (每隔一段時間自動產生)
+        let autoHeartInterval;
+        function startAutoHearts() {
+            if (autoHeartInterval) clearInterval(autoHeartInterval);
+            autoHeartInterval = setInterval(() => {
+                // 隨機產生 1~3 個愛心
+                const howMany = Math.floor(randomRange(1, 3));
+                for (let i = 0; i < howMany; i++) {
+                    createFloatingHeart();
+                }
+            }, 900);
+        }
+        
+        // 點擊畫面觸發愛心群 + 特效 (且不干擾按鈕點擊事件)
+        document.body.addEventListener('click', (e) => {
+            // 如果點擊的是按鈕本身，只執行按鈕的爆發愛心雨，不重複觸發？但可以兩者皆有效果，感覺更歡樂
+            // 但為了體驗: 點擊按鈕時，我們會額外觸發爆發，但 body 的點擊也會再觸發一次。會變得太多。
+            // 為了避免雙重重疊太吵，判斷如果點擊目標是按鈕或其子元素，不觸發 body 的 burstHeartsAtClick
+            if (e.target.closest('#burstBtn')) {
+                return;
+            }
+            burstHeartsAtClick(e);
+        });
+        
+        // 爆發愛心雨按鈕 (更大的愛心雨)
+        const burstBtn = document.getElementById('burstBtn');
+        burstBtn.addEventListener('click', (e) => {
+            e.stopPropagation();  // 防止冒泡觸發 body 的點擊事件
+            // 大爆發: 一次產生 45 ~ 70 個愛心
+            const rainCount = Math.floor(randomRange(45, 75));
+            for (let i = 0; i < rainCount; i++) {
+                setTimeout(() => {
+                    // 隨機從螢幕上方/側邊 不同位置爆發
+                    const randomX = randomRange(40, window.innerWidth - 40);
+                    const randomY = randomRange(20, window.innerHeight * 0.6);
+                    createFloatingHeart(randomX, randomY, randomRange(1.2, 3.2));
+                }, i * 20);
+            }
+            // 按鈕自己也產生一個小回饋
+            const tempSpan = document.createElement('span');
+            tempSpan.innerText = '💕';
+            tempSpan.style.position = 'fixed';
+            tempSpan.style.left = e.clientX - 15 + 'px';
+            tempSpan.style.top = e.clientY - 15 + 'px';
+            tempSpan.style.fontSize = '2rem';
+            tempSpan.style.pointerEvents = 'none';
+            tempSpan.style.zIndex = '9999';
+            tempSpan.style.opacity = '0.8';
+            tempSpan.style.animation = 'popUp 0.5s ease-out forwards';
+            document.body.appendChild(tempSpan);
+            setTimeout(() => tempSpan.remove(), 500);
+        });
+        
+        // 啟動自動飄浮愛心
+        startAutoHearts();
+        
+        // 讓視窗 resize 時沒有影響 (不會導致錯誤)
+        window.addEventListener('resize', () => {});
+        
+        // 可加入一點初始化小驚喜: 開啟頁面後一秒落下 12 個愛心
+        setTimeout(() => {
+            for (let i = 0; i < 12; i++) {
+                setTimeout(() => createFloatingHeart(), i * 80);
+            }
+        }, 300);
+    })();
+</script>
+<footer>💗 楊樂樂520快樂~愛你 💗</footer>
+</body>
+</html>
