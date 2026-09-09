@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>楊樂樂生日快樂 · 動態背景</title>
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+QingKe+HuangYou&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #9e13fa;
+            --secondary-color: #c486ee;
+            --accent-color: #4d0a50;
+            --text-color: #ad01f1;
+        }
+
+        body {
+            font-family: 'Ma Shan Zheng', cursive, 'ZCOOL QingKe HuangYou', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            background: linear-gradient(145deg, #1a0b1f 0%, #2d1b36 40%, #1f1125 100%);
+            color: var(--text-color);
+            font-size: 18px;
+            overflow-x: hidden;
+        }
+
+        /* 動態背景 Canvas */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            display: block;
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 1100px;
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(2px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+            padding: 30px 35px;
+            margin: 20px 0;
+            border-radius: 32px 8px 32px 8px;
+            border: 1px solid rgba(255, 215, 255, 0.3);
+        }
+
+        h1 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 48px;
+            text-shadow: 0 0 10px rgba(158, 19, 250, 0.3);
+            letter-spacing: 4px;
+        }
+
+        /* 標籤頁 */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: 12px 32px;
+            background: rgba(255, 255, 255, 0.7);
+            border: 2px solid var(--primary-color);
+            border-radius: 60px;
+            color: var(--primary-color);
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 22px;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            letter-spacing: 2px;
+        }
+
+        .tab:hover {
+            background: var(--primary-color);
+            color: #f5e942;
+            transform: scale(1.03);
+            border-color: #f5e942;
+            box-shadow: 0 0 20px rgba(158, 19, 250, 0.6);
+        }
+
+        .tab.active {
+            background: var(--primary-color);
+            color: #0a0000;
+            border-color: #ffd966;
+            box-shadow: 0 0 25px #9e13fa88;
+        }
+
+        .content-section {
+            display: none;
+            animation: fadeIn 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        h2 {
+            color: var(--secondary-color);
+            border-bottom: 4px solid var(--accent-color);
+            padding-bottom: 12px;
+            margin-top: 0;
+            font-size: 34px;
+            letter-spacing: 2px;
+        }
+
+        /* ===== 重點修改：圖左字右，並排 ===== */
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            margin-bottom: 20px;
+            flex-wrap: nowrap;  /* 強制不換行，但手機版會改為直排 */
+        }
+
+        .profile-img {
+            flex: 0 0 auto;      /* 不伸縮，保持固定寬度 */
+            width: 260px;
+            height: 260px;
+            object-fit: cover;
+            border: 4px solid var(--accent-color);
+            border-radius: 30% 10% 30% 10%;
+            box-shadow: 0 8px 24px rgba(77, 10, 80, 0.5);
+            transition: 0.3s;
+        }
+        .profile-img:hover {
+            transform: rotate(2deg) scale(1.02);
+            border-color: #f5b0ff;
+        }
+
+        .profile-info {
+            flex: 1;            /* 佔據剩餘空間 */
+            min-width: 0;       /* 防止溢出 */
+        }
+
+        .profile-info p {
+            font-size: 22px;
+            line-height: 1.7;
+            margin: 12px 0;
+            background: rgba(255, 240, 255, 0.3);
+            padding: 6px 18px;
+            border-radius: 40px;
+            backdrop-filter: blur(2px);
+        }
+
+        /* 回憶錄卡片區 */
+        .project-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .project-card {
+            background: rgba(255, 235, 250, 0.7);
+            backdrop-filter: blur(4px);
+            padding: 22px 18px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            transition: all 0.25s ease;
+            border: 1px solid #d9b0e6;
+            border-radius: 24px 4px 24px 4px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 28px rgba(158, 19, 250, 0.25);
+            border-color: var(--primary-color);
+            background: rgba(255, 245, 255, 0.85);
+        }
+
+        .project-card h3 {
+            font-size: 24px;
+            color: var(--primary-color);
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        .project-card p {
+            font-size: 18px;
+            line-height: 1.5;
+            flex: 1;
+        }
+
+        .project-card a {
+            display: inline-block;
+            padding: 10px 18px;
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 60px;
+            margin-top: 18px;
+            transition: 0.25s;
+            font-size: 18px;
+            text-align: center;
+            font-weight: bold;
+            align-self: flex-start;
+            border: 1px solid transparent;
+        }
+
+        .project-card a:hover {
+            background: var(--secondary-color);
+            color: #1a0b1f;
+            border-color: white;
+            transform: scale(1.02);
+            box-shadow: 0 0 18px #c486ee;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== 手機版：改為圖文上下排列 ===== */
+        @media (max-width: 768px) {
+            body { font-size: 16px; }
+            .container { padding: 20px; }
+
+            .profile {
+                flex-wrap: wrap;          /* 允許換行 */
+                justify-content: center;  /* 置中 */
+                gap: 20px;
+            }
+            .profile-img {
+                width: 200px;
+                height: 200px;
+                flex: 0 0 auto;
+            }
+            .profile-info {
+                flex: 0 0 100%;           /* 寬度100%，文字區塊完整顯示 */
+                text-align: center;
+            }
+            .profile-info p {
+                font-size: 19px;
+                display: inline-block;    /* 讓背景條只包住文字 */
+                padding: 6px 18px;
+            }
+
+            .tabs { gap: 12px; }
+            .tab { font-size: 18px; padding: 10px 22px; }
+            h1 { font-size: 38px; }
+            h2 { font-size: 28px; }
+            .project-list { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 480px) {
+            .container { padding: 16px; }
+            h1 { font-size: 30px; }
+            .tab { font-size: 16px; padding: 8px 16px; }
+            .profile-img { width: 160px; height: 160px; }
+        }
+
+        /* 小修飾 */
+        .profile-info p:first-of-type {
+            font-size: 24px;
+            color: #7a1b8a;
+            font-weight: bold;
+        }
+        .profile-info p:last-of-type {
+            border-left: 4px solid var(--accent-color);
+            padding-left: 18px;
+            font-style: italic;
+        }
+        @media (max-width: 768px) {
+            .profile-info p:last-of-type {
+                border-left: none;
+                padding-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="bg-canvas"></canvas>
+
+    <div class="container">
+        <h1>🎂 生日快樂 🎂</h1>
+        
+        <div class="tabs">
+            <div class="tab active" onclick="changeToHydrangea()">生日快樂</div>
+            <div class="tab" onclick="changeToOncidium()">回憶錄</div>
+        </div>
+        
+        <!-- 生日快樂 分頁 -->
+        <div id="hydrangea" class="content-section active">
+            <h2>❤️ 楊樂樂祝你生日快樂 ❤️</h2>
+            <div class="profile">
+                <!-- 圖左 -->
+                <img src="caddcbbc-5f09-42de-af21-a96e24448fbb.jpg" width='400' height='400' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23b57edc'/%3E%3Ccircle cx='35' cy='35' r='10' fill='%23f9e076'/%3E%3Ccircle cx='65' cy='35' r='10' fill='%23f9e076'/%3E%3Cpath d='M30 65 Q50 80,70 65' stroke='%23ffb3c6' stroke-width='6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E" alt="楊樂樂的可愛頭像" class="profile-img">
+                <!-- 字右 -->
+                <div class="profile-info">
+                    <p>✨ 我是大帥哥趙政豪 aka 台南彭于晏 ✨</p>
+                    <p>🎉 今天是專屬於你的節日~ 🎉</p>
+                    <p>💜 我首先要謝謝你，願意花時間在我身上，不管是平日、假日的晚上，只要我打電話，你都不厭其煩都接聽。我很榮幸能夠成為你的男朋友， 💜</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 回憶錄 分頁 -->
+        <div id="oncidium" class="content-section">
+            <h2>📸 我們的回憶錄 📸</h2>
+            <p style="font-size: 22px; text-align: center; margin-bottom: 20px; background: rgba(255,220,255,0.3); padding: 8px 16px; border-radius: 60px;">一起創造的每一個瞬間 💕</p>
+            
+            <div class="project-list">
+                <div class="project-card">
+                    <h3>💬 心裡話</h3>
+                    <p>2026/4/2<br>不加修飾</p>
+                    <a href="心裡話.html" target=blank">快點點我 ❤️</a>
+                </div>
+                <div class="project-card">
+                    <h3>💌 正式的情書</h3>
+                    <p>述說著無法用言語表達的愛<br> 我喜歡你</p>
+                    <a href="對你的感想.html" target="_blank">快點用力點我 ❤️</a>
+                </div>
+                <div class="project-card">
+                    <h3> 在沙發上發芽的馬鈴薯</h3>
+                    <p>我正在嘗試怎麼畫好，請見諒<br> 雖然不及妳萬分之一的美</p>
+                    <a href="在沙發上發芽的馬鈴薯.html" target="_blank">求求你~點我 ❤️</a>
+                </div>
+               
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ---------- 標籤切換 ----------
+        function changeToOncidium() {  
+            document.querySelector("#hydrangea").classList.remove("active");
+            document.querySelector("#oncidium").classList.add("active");
+            document.querySelectorAll(".tab").forEach(tab => tab.classList.remove("active"));
+            document.querySelectorAll(".tab")[1].classList.add("active");
+        }
+        function changeToHydrangea() {  
+            document.querySelector("#oncidium").classList.remove("active");
+            document.querySelector("#hydrangea").classList.add("active");
+            document.querySelectorAll(".tab").forEach(tab => tab.classList.remove("active"));
+            document.querySelectorAll(".tab")[0].classList.add("active");
+        }
+
+        // ---------- 動態背景 (粒子星空) ----------
+        (function initBackground() {
+            const canvas = document.getElementById('bg-canvas');
+            const ctx = canvas.getContext('2d');
+            let width, height;
+            let particles = [];
+            const PARTICLE_COUNT = 110;
+
+            function resize() {
+                width = window.innerWidth;
+                height = window.innerHeight;
+                canvas.width = width;
+                canvas.height = height;
+            }
+            window.addEventListener('resize', resize);
+            resize();
+
+            class Particle {
+                constructor() {
+                    this.x = Math.random() * width;
+                    this.y = Math.random() * height;
+                    this.size = Math.random() * 3.5 + 0.6;
+                    this.speedX = (Math.random() - 0.5) * 0.5;
+                    this.speedY = (Math.random() - 0.5) * 0.5;
+                    this.opacity = Math.random() * 0.6 + 0.3;
+                    this.hue = 270 + Math.random() * 50;
+                    this.saturation = 70 + Math.random() * 30;
+                    this.lightness = 60 + Math.random() * 30;
+                }
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+                    if (this.x < 0 || this.x > width) { this.speedX *= -0.9; this.x = Math.min(Math.max(this.x, 2), width - 2); }
+                    if (this.y < 0 || this.y > height) { this.speedY *= -0.9; this.y = Math.min(Math.max(this.y, 2), height - 2); }
+                    if (Math.random() < 0.005) {
+                        this.speedX += (Math.random() - 0.5) * 0.2;
+                        this.speedY += (Math.random() - 0.5) * 0.2;
+                        const maxSpeed = 0.8;
+                        if (Math.abs(this.speedX) > maxSpeed) this.speedX = Math.sign(this.speedX) * maxSpeed;
+                        if (Math.abs(this.speedY) > maxSpeed) this.speedY = Math.sign(this.speedY) * maxSpeed;
+                    }
+                }
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = `hsla(${this.hue}, ${this.saturation}%, ${this.lightness}%, ${this.opacity})`;
+                    ctx.fill();
+                    if (this.size > 2) {
+                        ctx.shadowColor = `hsla(${this.hue}, 80%, 70%, 0.3)`;
+                        ctx.shadowBlur = 12;
+                        ctx.fill();
+                        ctx.shadowBlur = 0;
+                    }
+                }
+            }
+
+            for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(new Particle());
+            for (let i = 0; i < 15; i++) {
+                const star = new Particle();
+                star.size = 3 + Math.random() * 6;
+                star.opacity = 0.5 + Math.random() * 0.4;
+                star.speedX = (Math.random() - 0.5) * 0.2;
+                star.speedY = (Math.random() - 0.5) * 0.2;
+                star.hue = 220 + Math.random() * 40;
+                particles.push(star);
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, width, height);
+                const gradient = ctx.createRadialGradient(
+                    width * 0.5, height * 0.4, 100,
+                    width * 0.6, height * 0.7, Math.max(width, height) * 0.8
+                );
+                gradient.addColorStop(0, '#281a30');
+                gradient.addColorStop(0.6, '#181020');
+                gradient.addColorStop(1, '#0b0710');
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, width, height);
+
+                particles.forEach(p => { p.update(); p.draw(); });
+
+                ctx.strokeStyle = 'rgba(200, 150, 255, 0.08)';
+                ctx.lineWidth = 0.6;
+                for (let i = 0; i < particles.length - 1; i+=3) {
+                    const p1 = particles[i];
+                    const p2 = particles[i+1] || particles[0];
+                    const dx = p1.x - p2.x;
+                    const dy = p1.y - p2.y;
+                    const dist = Math.sqrt(dx*dx + dy*dy);
+                    if (dist < 150 && dist > 20) {
+                        ctx.beginPath();
+                        ctx.moveTo(p1.x, p1.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.strokeStyle = `rgba(190, 140, 255, ${0.04 * (1 - dist/200)})`;
+                        ctx.stroke();
+                    }
+                }
+                requestAnimationFrame(animate);
+            }
+            animate();
+
+            window.addEventListener('resize', () => {
+                resize();
+                particles.forEach(p => {
+                    p.x = Math.min(p.x, width - 2);
+                    p.y = Math.min(p.y, height - 2);
+                });
+            });
+        })();
+    </script>
+</body>
+</html>

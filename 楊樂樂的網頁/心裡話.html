@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>楊樂樂~我愛你</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none; 
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(145deg, #ff9a9e 0%, #fad0c4 35%, #fad0c4 70%, #ffdde1 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', 'Quicksand', system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', 'Apple Color Emoji', 'Segoe UI Emoji', sans-serif;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+            cursor: pointer;
+        }
+
+        /* 飄浮的愛心粒子背景 */
+        .floating-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .heart-particle {
+            position: absolute;
+            color: rgba(255, 80, 120, 0.6);
+            font-size: 1.2rem;
+            user-select: none;
+            pointer-events: none;
+            animation: floatHeart 8s linear infinite;
+            bottom: -50px;
+            opacity: 0;
+        }
+
+        @keyframes floatHeart {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* 主卡片區 */
+        .card {
+            position: relative;
+            z-index: 10;
+            max-width: 650px;
+            width: 100%;
+            background: rgba(255, 248, 245, 0.96);
+            backdrop-filter: blur(4px);
+            border-radius: 68px 68px 72px 72px;
+            box-shadow: 0 30px 45px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+            text-align: center;
+            padding: 40px 30px 55px;
+            transition: all 0.3s ease;
+            animation: cardGlow 2s infinite alternate;
+        }
+
+        @keyframes cardGlow {
+            0% {
+                box-shadow: 0 20px 35px rgba(0, 0, 0, 0.15), 0 0 0 2px rgba(255, 220, 200, 0.7) inset;
+            }
+            100% {
+                box-shadow: 0 30px 55px rgba(231, 76, 105, 0.3), 0 0 0 4px rgba(255, 160, 130, 0.9) inset;
+            }
+        }
+
+        /* 愛心大標題動畫 */
+        .heart-icon {
+            font-size: 4.5rem;
+            display: inline-block;
+            animation: heartbeat 1.4s ease infinite;
+            filter: drop-shadow(0 6px 12px rgba(231, 76, 105, 0.3));
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.2); text-shadow: 0 0 8px #ff3366; }
+            35% { transform: scale(1.1); }
+            50% { transform: scale(1.2); }
+        }
+
+        h1 {
+            font-size: 2.4rem;
+            margin: 15px 0 8px;
+            background: linear-gradient(135deg, #d9466b, #ff8c5a);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+            font-weight: 700;
+        }
+
+        .greeting {
+            font-size: 1.3rem;
+            color: #b23c4c;
+            font-weight: 500;
+            margin-bottom: 25px;
+            background: #fff0e6;
+            display: inline-block;
+            padding: 5px 20px;
+            border-radius: 60px;
+            backdrop-filter: blur(4px);
+        }
+
+        .message-box {
+            background: rgba(255, 240, 235, 0.7);
+            border-radius: 48px;
+            padding: 28px 20px;
+            margin: 25px 0;
+            border: 1px solid rgba(255, 200, 180, 0.7);
+            transition: 0.2s;
+        }
+
+        .message {
+            font-size: 1.4rem;
+            line-height: 1.5;
+            color: #531d2a;
+            font-weight: 500;
+            white-space: pre-line;
+            word-break: break-word;
+        }
+
+        .quote {
+            font-size: 1rem;
+            margin-top: 15px;
+            color: #c36f7a;
+            font-style: italic;
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            align-items: center;
+        }
+
+        /* 按鈕區 - 特別設計讓「我願意」按鈕可以動態變大/縮小 */
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin: 20px 0 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .btn {
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            padding: 12px 28px;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.2);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: 1px;
+            will-change: transform, font-size, padding;
+        }
+
+        /* 我願意按鈕 - 專屬樣式，會動態調整大小 */
+        .btn-yes {
+            background: linear-gradient(115deg, #ff4d6d, #ff1e4d);
+            transform-origin: center;
+            transition: all 0.35s cubic-bezier(0.34, 1.2, 0.64, 1);
+        }
+
+        .btn-yes:hover {
+            transform: translateY(-4px) scale(1.02);
+            filter: brightness(1.05);
+            box-shadow: 0 12px 20px rgba(231, 76, 105, 0.5);
+        }
+
+        /* 拒絕按鈕 (先不要) */
+        .btn-no {
+            background: linear-gradient(115deg, #b9a3a3, #9e7676);
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        .btn-no:hover {
+            transform: translateY(-3px);
+            background: linear-gradient(115deg, #c2a5a5, #ac8383);
+            box-shadow: 0 8px 18px rgba(0,0,0,0.2);
+        }
+        
+        /* 按鈕點擊效果 */
+        .btn:active {
+            transform: translateY(2px);
+        }
+
+        
+        .music-control {
+            background: rgba(255, 235, 225, 0.9);
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            cursor: pointer;
+            z-index: 30;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: 0.2s;
+            border: 1px solid rgba(255,255,200,0.7);
+        }
+        .music-control:hover {
+            transform: scale(1.08);
+            background: #ffe0d4;
+        }
+
+        .reply-area {
+            margin-top: 30px;
+            background: #fff2ed;
+            border-radius: 36px;
+            padding: 15px 18px;
+            transition: all 0.3s;
+            border: 1px dashed #ffb3a3;
+        }
+
+        .reply-text {
+            font-size: 1.1rem;
+            color: #c95c6f;
+            font-weight: 500;
+        }
+
+        .firework-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 20;
+        }
+
+        footer {
+            font-size: 0.7rem;
+            margin-top: 30px;
+            color: #af7a81;
+            opacity: 0.7;
+        }
+
+        
+        @keyframes growGlow {
+            0% { box-shadow: 0 5px 12px rgba(0, 0, 0, 0.2); }
+            100% { box-shadow: 0 0 25px 8px rgba(255, 77, 109, 0.7); }
+        }
+        
+        .btn-yes-growing {
+            animation: growGlow 0.4s ease-out;
+        }
+
+        @media (max-width: 550px) {
+            .card { padding: 28px 18px 40px; }
+            .message { font-size: 1.2rem; }
+            h1 { font-size: 1.9rem; }
+            .btn { padding: 9px 20px; font-size: 1rem; }
+            .heart-icon { font-size: 3.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="floating-hearts" id="floatingHearts"></div>
+<canvas id="fireworkCanvas" class="firework-canvas"></canvas>
+
+<div class="card">
+    <div class="heart-icon">❤️‍🔥</div>
+    <h1>給楊樂樂</h1>
+    <div class="greeting"> 藏在心底的話，此刻只想對你說 </div>
+
+    <div class="message-box">
+        <div class="message" id="confessionMessage">
+            遇見你之後，<br>
+            每天的雲都特別溫柔，風也特別甜。<br>
+            在你的身邊總是瀰漫著淡淡花香，不知道那花是不是象徵愛情的玫瑰<br>
+            我不太會說漂亮話，<br>
+            但有一件事，我想讓全世界都知道 ——<br>
+            <strong>我喜歡你。</strong><br>
+            <span style="font-size:1rem">💗 你願意和我一起，寫下更多故事嗎？ 💗</span>
+        </div>
+        <div class="quote">
+            <span>🌹</span> 從坦白到現在，我對你的愛一直都沒有變<span>🌹</span>
+        </div>
+    </div>
+
+    <div class="button-group">
+        <button class="btn btn-yes" id="yesBtn">💖 我願意 💖</button>
+        <button class="btn btn-no" id="noBtn">🍃 先不要 🍃</button>
+    </div>
+
+    <div class="reply-area" id="replyArea">
+        <div class="reply-text" id="replyMsg">💌 點下按鈕，給我你的答案好嗎？ 💌</div>
+    </div>
+    <footer>♡ 點擊畫面任何地方 就當我現實中送不成花 ♡</footer>
+</div>
+
+<div class="music-control" id="musicToggleBtn" title="播放/暫停背景音樂">🎵</div>
+
+<script>
+    (function() {
+        // ---------- 浪漫音效 (Web Audio) ----------
+        let audioCtx = null;
+        let isMusicPlaying = false;
+        let musicGain = null;
+        let musicInterval = null;
+        
+        function initAudio() {
+            if (audioCtx) return;
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            musicGain = audioCtx.createGain();
+            musicGain.gain.value = 0.28;
+            musicGain.connect(audioCtx.destination);
+        }
+        
+        function startSoftMusic() {
+            if (!audioCtx) initAudio();
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume().then(() => {
+                    playMusicLoop();
+                }).catch(e=>console.log);
+            } else {
+                playMusicLoop();
+            }
+        }
+        
+        function playMusicLoop() {
+            if (!audioCtx || isMusicPlaying) return;
+            stopSoftMusic();
+            isMusicPlaying = true;
+            
+            const osc1 = audioCtx.createOscillator();
+            const osc2 = audioCtx.createOscillator();
+            const gain1 = audioCtx.createGain();
+            const gain2 = audioCtx.createGain();
+            
+            osc1.type = 'sine';
+            osc1.frequency.value = 440;
+            osc2.type = 'sine';
+            osc2.frequency.value = 554.37;
+            
+            gain1.gain.value = 0.2;
+            gain2.gain.value = 0.18;
+            
+            osc1.connect(gain1);
+            osc2.connect(gain2);
+            gain1.connect(musicGain);
+            gain2.connect(musicGain);
+            
+            osc1.start();
+            osc2.start();
+            
+            const lfo = audioCtx.createOscillator();
+            const lfoGain = audioCtx.createGain();
+            lfo.type = 'sine';
+            lfo.frequency.value = 4.2;
+            lfoGain.gain.value = 18;
+            lfo.connect(lfoGain);
+            lfoGain.connect(osc1.frequency);
+            lfoGain.connect(osc2.frequency);
+            lfo.start();
+            
+            musicInterval = { osc1, osc2, lfo, gain1, gain2, lfoGain };
+            
+            musicGain.gain.setValueAtTime(0, audioCtx.currentTime);
+            musicGain.gain.linearRampToValueAtTime(0.22, audioCtx.currentTime + 2.5);
+        }
+        
+        function stopSoftMusic() {
+            if (musicInterval) {
+                try {
+                    musicInterval.osc1?.stop();
+                    musicInterval.osc2?.stop();
+                    musicInterval.lfo?.stop();
+                } catch(e) {}
+                musicInterval = null;
+            }
+            isMusicPlaying = false;
+        }
+        
+        function toggleMusic() {
+            if (!audioCtx) initAudio();
+            if (isMusicPlaying) {
+                stopSoftMusic();
+                if (musicGain) musicGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.5);
+                document.getElementById('musicToggleBtn').innerHTML = '🔇';
+            } else {
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume().then(() => {
+                        startSoftMusic();
+                        document.getElementById('musicToggleBtn').innerHTML = '🎵';
+                    }).catch(e=>console.log);
+                } else {
+                    startSoftMusic();
+                    document.getElementById('musicToggleBtn').innerHTML = '🎵';
+                }
+            }
+        }
+        
+        const musicBtn = document.getElementById('musicToggleBtn');
+        musicBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleMusic();
+        });
+        
+        function unlockAudioOnFirstClick() {
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume().catch(()=>{});
+            }
+            document.body.removeEventListener('click', unlockAudioOnFirstClick);
+            document.body.removeEventListener('touchstart', unlockAudioOnFirstClick);
+        }
+        document.body.addEventListener('click', unlockAudioOnFirstClick);
+        document.body.addEventListener('touchstart', unlockAudioOnFirstClick);
+        
+        // ---------- 煙火效果 ----------
+        const canvas = document.getElementById('fireworkCanvas');
+        let ctx = canvas.getContext('2d');
+        let width = window.innerWidth;
+        let height = window.innerHeight;
+        let fireworks = [];
+        let particles = [];
+        
+        function resizeCanvas() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+        
+        class Firework {
+            constructor(x, y, targetX, targetY) {
+                this.x = x;
+                this.y = y;
+                this.targetX = targetX;
+                this.targetY = targetY;
+                this.vx = (targetX - x) / 28;
+                this.vy = (targetY - y) / 28;
+                this.alpha = 1;
+                this.radius = 3;
+                this.color = `hsl(${Math.random() * 40 + 340}, 100%, 65%)`;
+                this.exploded = false;
+            }
+            update() {
+                if (!this.exploded) {
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    const dx = this.x - this.targetX;
+                    const dy = this.y - this.targetY;
+                    if (Math.abs(dx) < 5 && Math.abs(dy) < 5) {
+                        this.exploded = true;
+                        createExplosion(this.targetX, this.targetY);
+                        return false;
+                    }
+                    return true;
+                }
+                return false;
+            }
+            draw() {
+                if (!this.exploded) {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2);
+                    ctx.fillStyle = this.color;
+                    ctx.fill();
+                }
+            }
+        }
+        
+        function createExplosion(x, y) {
+            const particleCount = 40 + Math.floor(Math.random() * 35);
+            for (let i = 0; i < particleCount; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const speed = Math.random() * 4 + 1.5;
+                const vx = Math.cos(angle) * speed;
+                const vy = Math.sin(angle) * speed;
+                particles.push({
+                    x: x, y: y, vx: vx, vy: vy,
+                    life: 1.0,
+                    color: `hsl(${Math.random() * 60 + 320}, 85%, 65%)`,
+                    size: Math.random() * 3 + 2,
+                    decay: 0.018 + Math.random() * 0.015
+                });
+            }
+        }
+        
+        function updateParticles() {
+            for (let i=0; i<particles.length; i++) {
+                const p = particles[i];
+                p.x += p.vx;
+                p.y += p.vy;
+                p.vy += 0.1;
+                p.life -= p.decay;
+                if(p.life <= 0 || p.y > height + 100) {
+                    particles.splice(i,1);
+                    i--;
+                }
+            }
+        }
+        
+        function drawParticles() {
+            for (let p of particles) {
+                ctx.globalAlpha = p.life * 0.9;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI*2);
+                ctx.fillStyle = p.color;
+                ctx.fill();
+            }
+            ctx.globalAlpha = 1;
+        }
+        
+        function animateFireworks() {
+            if (!ctx) return;
+            ctx.clearRect(0, 0, width, height);
+            for (let i=0; i<fireworks.length; i++) {
+                const alive = fireworks[i].update();
+                fireworks[i].draw();
+                if (!alive) {
+                    fireworks.splice(i,1);
+                    i--;
+                }
+            }
+            updateParticles();
+            drawParticles();
+            requestAnimationFrame(animateFireworks);
+        }
+        animateFireworks();
+        
+        function launchRandomFirework() {
+            const startX = Math.random() * width;
+            const startY = height;
+            const targetX = Math.random() * (width - 100) + 50;
+            const targetY = Math.random() * (height * 0.5) + 80;
+            fireworks.push(new Firework(startX, startY, targetX, targetY));
+        }
+        
+        function burstFireworksSequence() {
+            for(let i=0;i<6;i++) {
+                setTimeout(() => launchRandomFirework(), i * 180);
+            }
+            setTimeout(() => {
+                for(let i=0;i<12;i++) {
+                    setTimeout(() => launchRandomFirework(), i * 100);
+                }
+            }, 600);
+        }
+        
+        // ---------- 飄浮愛心 ----------
+        const heartsContainer = document.getElementById('floatingHearts');
+        function createHeart() {
+            const heartSpan = document.createElement('div');
+            heartSpan.classList.add('heart-particle');
+            const icons = ['❤️', '💖', '💗', '💓', '💕', '🌸', '🌹'];
+            heartSpan.innerHTML = icons[Math.floor(Math.random() * icons.length)];
+            heartSpan.style.left = Math.random() * 100 + '%';
+            heartSpan.style.fontSize = (Math.random() * 20 + 16) + 'px';
+            heartSpan.style.animationDuration = (Math.random() * 4 + 6) + 's';
+            heartSpan.style.animationDelay = Math.random() * 3 + 's';
+            heartsContainer.appendChild(heartSpan);
+            setTimeout(() => heartSpan.remove(), 10000);
+        }
+        setInterval(createHeart, 550);
+        for(let i=0;i<10;i++) setTimeout(createHeart, i*200);
+        
+        
+        function createFloatingFlower(x, y) {
+            const flower = document.createElement('div');
+            flower.innerText = ['🌸','🌺','🌸','💮','🌼','🌸','❤️'][Math.floor(Math.random()*7)];
+            flower.style.position = 'fixed';
+            flower.style.left = (x - 12) + 'px';
+            flower.style.top = (y - 12) + 'px';
+            flower.style.fontSize = '24px';
+            flower.style.pointerEvents = 'none';
+            flower.style.zIndex = '25';
+            flower.style.opacity = '0.9';
+            flower.style.transition = 'all 1.5s ease-out';
+            document.body.appendChild(flower);
+            let dy = -20;
+            let dx = (Math.random() - 0.5) * 30;
+            const startTime = performance.now();
+            function animateFall(timestamp) {
+                const elapsed = (performance.now() - startTime);
+                const progress = Math.min(1, elapsed / 1600);
+                const newTop = y - 20 + (dy * progress) + (progress * 70);
+                const newLeft = x + dx * progress + Math.sin(progress * Math.PI*2)*6;
+                flower.style.top = newTop + 'px';
+                flower.style.left = newLeft + 'px';
+                flower.style.opacity = 1 - progress * 0.9;
+                if(progress < 1) requestAnimationFrame(animateFall);
+                else flower.remove();
+            }
+            requestAnimationFrame(animateFall);
+        }
+        
+        document.body.addEventListener('click', (e) => {
+            const x = e.clientX, y = e.clientY;
+
+            createFloatingFlower(x, y);
+        });
+        document.body.addEventListener('touchstart', (e) => {
+            const touch = e.touches[0];
+            createFloatingFlower(touch.clientX, touch.clientY);
+        });
+        
+
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const replyMsgDiv = document.getElementById('replyMsg');
+        const confessionMsgDiv = document.getElementById('confessionMessage');
+        
+        
+        let currentScale = 1;
+        const maxScale = 4.2;      
+        const scaleStep = 0.38;    
+        
+        
+        const defaultBtnFontSize = "1.2rem";
+        const defaultBtnPadding = "12px 28px";
+        
+        
+        function updateYesButtonScale() {
+            if (currentScale > maxScale) currentScale = maxScale;
+            const newFontSize = Math.min(2.8, 1.2 + (currentScale - 1) * 0.45);
+            const newPaddingTB = Math.min(32, 12 + (currentScale - 1) * 8);
+            const newPaddingLR = Math.min(70, 28 + (currentScale - 1) * 15);
+            
+            yesBtn.style.transform = `scale(${currentScale})`;
+            yesBtn.style.fontSize = `${newFontSize}rem`;
+            yesBtn.style.padding = `${newPaddingTB}px ${newPaddingLR}px`;
+            yesBtn.style.zIndex = "15";
+            yesBtn.style.boxShadow = `0 0 20px rgba(255, 50, 80, ${0.5 + (currentScale-1)*0.2})`;
+            
+            // 添加閃光效果
+            yesBtn.classList.add('btn-yes-growing');
+            setTimeout(() => yesBtn.classList.remove('btn-yes-growing'), 400);
+        }
+        
+        // 重置「我願意」按鈕到原始大小 (scale = 1) 並帶有溫柔動畫
+        function resetYesButtonToNormal() {
+            currentScale = 1;
+            yesBtn.style.transform = "scale(1)";
+            yesBtn.style.fontSize = defaultBtnFontSize;
+            yesBtn.style.padding = defaultBtnPadding;
+            yesBtn.style.boxShadow = "0 5px 12px rgba(0, 0, 0, 0.2)";
+            yesBtn.style.zIndex = "";
+            // 額外添加一個可愛的彈跳感
+            yesBtn.style.transition = "all 0.4s cubic-bezier(0.34, 1.2, 0.64, 1)";
+            // 確保動畫後無殘留
+            setTimeout(() => {
+                if (yesBtn.style.transform === "scale(1)") {
+                    yesBtn.style.transition = "all 0.35s cubic-bezier(0.34, 1.2, 0.64, 1)";
+                }
+            }, 500);
+        }
+        
+        let disableNoButtonEffect = false;  // 告白成功後，拒絕按鈕無法再讓按鈕放大
+        
+        // 拒絕按鈕 (先不要) -> 讓「我願意」按鈕越來越大
+        noBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (disableNoButtonEffect) {
+                replyMsgDiv.innerHTML = ' 你已經答應我了喔！不可以反悔 不可以拋棄 不可以不想我 不可以不愛我 ～我愛你 ';
+                return;
+            }
+            // 核心：每次點擊「先不要」讓「我願意」按鈕倍率增加
+            currentScale += scaleStep;
+            if (currentScale > maxScale) currentScale = maxScale;
+            updateYesButtonScale();
+            
+            // 幽默拒絕回應集合，持續鼓勵點「我願意」
+            const rejectMessages = [
+                " 你捨得拒絕我嗎？但我會等你，按「我願意」嘛～",
+                " 沒關係～我的心意不變，你看「我願意」變大了唷！",
+                " 再考慮一下好嗎？每次點「先不要」，愛的按鈕就更大更明顯",
+                " 拒絕太多次的話，全世界都會看到我愛你～快按「我願意」吧！",
+                " 先不要沒關係，但按鈕越來越大囉，最終會點到「我願意」的"
+            ];
+            const randomMsg = rejectMessages[Math.floor(Math.random() * rejectMessages.length)];
+            replyMsgDiv.innerHTML = `🍃 ${randomMsg} 🍃`;
+            
+            // 飄落花瓣製造小驚喜
+            for(let i=0;i<8;i++) {
+                setTimeout(() => {
+                    const fakeX = Math.random() * window.innerWidth;
+                    const fakeY = Math.random() * window.innerHeight;
+                    createFloatingFlower(fakeX, fakeY);
+                }, i * 40);
+            }
+            setTimeout(() => launchRandomFirework(), 100);
+            
+            if (currentScale >= 3.2) {
+                replyMsgDiv.innerHTML = "你就不能按我願意嗎?！快按「我願意」吧～ 💖";
+            }
+        });
+        
+        // 我願意按鈕 - 告白成功，並且將「我願意」按鈕縮小回正常尺寸
+        yesBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (disableNoButtonEffect) {
+                
+                replyMsgDiv.innerHTML = '💖 我好開心！我好幸福!你又一次選擇了我 💖 你願意和我在一起！';
+                burstFireworksSequence();
+                for(let i=0;i<3;i++) setTimeout(()=> launchRandomFirework(), i*150);
+                return;
+            }
+            
+            // 正式告白成功 !
+            disableNoButtonEffect = true;
+            
+            // ★ 重點: 點完我願意 要把「我願意」按鈕縮小回正常尺寸 ★
+            resetYesButtonToNormal();   // 縮小至原始大小 (scale = 1)
+            
+            // 更新告白訊息與回應區域
+            replyMsgDiv.innerHTML = '🎉 我願意！我也超喜歡你！我們在一起吧 🎉 <br> 💖 以後每一天都讓我陪著你 💖';
+            burstFireworksSequence();
+            confessionMsgDiv.innerHTML = '💞 你答應了！這是我最快樂的一刻 💞<br> 謝謝你願意走進我的世界，我會用一輩子珍惜你。';
+            for(let i=0;i<8;i++) setTimeout(()=> launchRandomFirework(), i*80);
+            
+            // 讓「我願意」按鈕在縮小後短暫發光，象徵幸福
+            yesBtn.style.boxShadow = "0 0 0 4px #ffb3c6, 0 0 0 8px #ff8da1";
+            setTimeout(() => {
+                if (yesBtn) yesBtn.style.boxShadow = "0 5px 12px rgba(0, 0, 0, 0.2)";
+            }, 800);
+            
+            
+            noBtn.style.opacity = "0.5";
+            noBtn.style.cursor = "default";
+            noBtn.innerText = "❤️ 告白成功 ❤️";
+            noBtn.disabled = true;
+            
+            // 啟用浪漫音樂
+            if(!isMusicPlaying && audioCtx) {
+                toggleMusic();
+            } else if(audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume().then(()=>{
+                    if(!isMusicPlaying) toggleMusic();
+                });
+            }
+            
+            // 最後深情回應
+            setTimeout(() => {
+                replyMsgDiv.innerHTML = ' 那接下來的每一天請小可愛持續愛著我';
+            }, 3200);
+        });
+        
+        // 初始小煙火歡迎
+        setTimeout(() => {
+            launchRandomFirework();
+            for(let i=0;i<3;i++) setTimeout(()=>launchRandomFirework(), i*300);
+        }, 500);
+        
+        document.querySelector('.card').style.opacity = '1';
+    })();
+</script>
+</body>
+</html>   
